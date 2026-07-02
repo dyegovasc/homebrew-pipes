@@ -1,10 +1,10 @@
 cask "pipes-local" do
-  version "0.4.5"
-  sha256 "cf028a0f6e685fbb7e540c62cdf5b3b149f4c4b0115efc3f1572a3c9441ec14c"
+  version "0.4.6"
+  sha256 "a3829bd1663c5693936e9f5df3c38e5fff499066231176fe7591d56db8563fef"
 
   github_token = ENV.fetch("HOMEBREW_GITHUB_API_TOKEN", "")
 
-  url "https://api.github.com/repos/dyegovasc/homebrew-pipes/releases/assets/464341759",
+  url "https://api.github.com/repos/dyegovasc/homebrew-pipes/releases/assets/464365392",
       verified: "api.github.com/",
       header: [
         "Accept: application/octet-stream",
