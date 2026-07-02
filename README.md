@@ -57,13 +57,3 @@ brew install --cask dyegovasc/pipes/pipes-local
 ```sh
 brew uninstall --cask pipes-local
 ```
-
-## Internal Release Flow
-
-From the `pipes-local` source repository, maintainers publish a new binary and update this tap with:
-
-```sh
-bun run distribute
-```
-
-That command builds and signs the app, uploads the versioned zip to a `dyegovasc/homebrew-pipes` GitHub Release, renders `Casks/pipes-local.rb`, commits the cask update, and pushes this tap.
