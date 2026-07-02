@@ -18,14 +18,28 @@ cask "pipes-local" do
   app "Pipes Local.app"
 
   preflight do
-    system_command "/usr/bin/pkill",
-                   args: ["-TERM", "-x", "Pipes Local"],
-                   sudo: false,
-                   must_succeed: false
+    if system_command("/usr/bin/pgrep",
+                      args: ["-x", "Pipes Local"],
+                      sudo: false,
+                      must_succeed: false).success?
+      system_command "/usr/bin/touch",
+                     args: ["/tmp/pipes-local-homebrew-relaunch"],
+                     sudo: false
 
-    system_command "/bin/sleep",
-                   args: ["2"],
-                   sudo: false
+      system_command "/usr/bin/pkill",
+                     args: ["-TERM", "-x", "Pipes Local"],
+                     sudo: false,
+                     must_succeed: false
+
+      system_command "/bin/sleep",
+                     args: ["2"],
+                     sudo: false
+    else
+      system_command "/bin/rm",
+                     args: ["-f", "/tmp/pipes-local-homebrew-relaunch"],
+                     sudo: false,
+                     must_succeed: false
+    end
   end
 
   postflight do
@@ -33,9 +47,19 @@ cask "pipes-local" do
                    args: ["-dr", "com.apple.quarantine", "#{appdir}/Pipes Local.app"],
                    sudo: false
 
-    system_command "/usr/bin/open",
-                   args: ["#{appdir}/Pipes Local.app"],
-                   sudo: false
+    if system_command("/usr/bin/test",
+                      args: ["-f", "/tmp/pipes-local-homebrew-relaunch"],
+                      sudo: false,
+                      must_succeed: false).success?
+      system_command "/usr/bin/open",
+                     args: ["#{appdir}/Pipes Local.app"],
+                     sudo: false
+
+      system_command "/bin/rm",
+                     args: ["-f", "/tmp/pipes-local-homebrew-relaunch"],
+                     sudo: false,
+                     must_succeed: false
+    end
   end
 
   uninstall quit: "com.pipes.local"
